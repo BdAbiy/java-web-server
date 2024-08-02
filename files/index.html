@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Styled Website</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin: 0;
+        }
+
+        p {
+            font-size: 1.2em;
+        }
+
+        main {
+            padding: 20px 0;
+        }
+
+        section {
+            padding: 40px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+            text-align: center;
+            flex: 1 1 calc(33.333% - 20px);
+            box-sizing: border-box;
+        }
+
+        .card img {
+            max-width: 100%;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .card h3 {
+            margin: 20px 0 10px;
+        }
+
+        .card p {
+            padding: 0 20px 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        form input, form textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        form button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Welcome to BADREDDIN's Website</h1>
+            <p>Running on his HTTP server</p>
+        </div>
+    </header>
+    <main>
+        <section id="about">
+            <div class="container">
+                <h2>About Me</h2>
+                <p>Welcome to my website! Here, you can find a collection of my work, hobbies, and interests. I'm passionate about web development and design.</p>
+            </div>
+        </section>
+        <section id="portfolio">
+            <div class="container">
+                <h2>Portfolio</h2>
+                <div class="grid">
+                    <div class="card">
+                        <img src="https://via.placeholder.com/300" alt="Project 1">
+                        <h3>Project 1</h3>
+                        <h4>JAVA Http Server</h4>
+                        <p>I have created a http server from scratch using Java and backend development skills and knowledge, you can download the project and source code from itch.io at</p>
+                        <a href="https://ab_iy.itch.io/">link to itch.io profile</a>
+                    </div>
+                    <div class="card">
+                        <img src="https://via.placeholder.com/300" alt="Project 2">
+                        <h3>Project 2</h3>
+                        <p>Survival horror game    
+                            Created using the Godot game engine,<br> the game revolves around some people who are lost in the middle of a huge <br>maze with the aim of finding a way out, and comes with a single player mode or a<br> LAN connection for multiplayer mode.<br>//The game is currently under development and is not available</p>
+                    </div>
+                    <div class="card">
+                        <img src="https://via.placeholder.com/300" alt="Project 3">
+                        <h3>Project 3</h3>
+                        <p>LAN chat app using the udb protocol its also downloadable fom my profile in <a href="https://ab_iy.itch.io">itch.io</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="contact">
+            <div class="container">
+                <h2>Contact Me</h2>
+                <form>
+                    <input type="text" placeholder="Name" required>
+                    <input type="email" placeholder="Email" required>
+                    <textarea placeholder="Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Your Name. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
