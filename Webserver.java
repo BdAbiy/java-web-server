@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Webserver {
     public static int port = 80;
@@ -50,7 +52,7 @@ public class Webserver {
              }else if(thereq[0].equals("Gico")){
                 out.println("HTTP/1.1 200 OK");
                 r = "200 OK";
-                out.println("Content-Type: image/icon");
+                out.println("Content-Type: image/x-icon");
                 File icon =new File("files" + thereq[1]);
                 out.println("Content-Length: " + icon.length());
                 out.println();
@@ -131,18 +133,19 @@ public static String[] GetReq(String r){
     }
     return re;
 }
-public static byte[] getbuffer(String p){
-    try {
-    byte[] b = Files.readAllBytes(new File(p).toPath());
-    if (b != null){
-        return b;
-    }else{
-        return null;
-    }
-}catch(Exception e){
-    return null;
-}
 
+
+public static byte[] getbuffer(String p) {
+    System.out.println(p);
+    try {
+        Path path = Paths.get(p);
+        return Files.readAllBytes(path);
+        }catch(Exception e){
+        e.printStackTrace();
+        return null;
+    }finally{
+       
+    }
 }
     
 }
