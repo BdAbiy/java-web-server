@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.io.FileInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -40,10 +42,22 @@ public class Webserver {
                 String[] thereq = GetReq(request);
                 System.out.println(thereq[0]+" : "+thereq[1]);
              if (thereq[0].startsWith("Ghtml")){
-                response = ReturnFileString("files" + thereq[1]);
+                if ((response = ReturnFileString("files" + thereq[1]))== null){throw new Exception("err");}
                 out.println("HTTP/1.1 200 OK");
                 r = "200 OK";
                 out.println("Content-Type: text/html");
+                out.println("Content-Length: " + response.length());
+                out.println();
+                out.print(response);
+                out.flush();
+                
+             }else if (thereq[0].equals("Gstyle")){
+                if ((response = ReturnFileString("files" + thereq[1]))== null){throw new Exception("err");}
+                System.out.println(thereq[0]+" : "+thereq[1]);
+                response = ReturnFileString("files"+thereq[1]);
+                out.println("HTTP/1.1 200 OK");
+                r = "200 OK";
+                out.println("Content-Type: style/css");
                 out.println("Content-Length: " + response.length());
                 out.println();
                 out.print(response);
@@ -57,11 +71,21 @@ public class Webserver {
                 out.println("Content-Length: " + icon.length());
                 out.println();
                 out.flush();
-                System.out.println(icon.getPath());
+                
                 clientSocket.getOutputStream().write(getbuffer(icon.getPath()));
                 clientSocket.getOutputStream().flush();
 
-             }else if(thereq[0].equals("no")){
+             }else if(thereq[0].equals("Gimg")){
+                out.println("HTTP/1.1 200 OK");
+                r = "200 OK";
+                out.println("Content-Type: image/png");
+                File img =new File("files" + thereq[1]);
+                out.println("Content-Length: " + img.length());
+                out.println();
+                out.flush();
+                clientSocket.getOutputStream().write(getbuffer(img.getPath()));
+                clientSocket.getOutputStream().flush();
+              }else if(thereq[0].equals("no")){
                 out.println("HTTP/1.1 302 Found");
                 r = "302 REDIRECT";
                 out.println("Location: /index.html");
@@ -78,6 +102,8 @@ public class Webserver {
             
           } catch (Exception e) {
             e.printStackTrace();
+           
+            
            
         }finally{
             try{System.out.println(r);
@@ -114,6 +140,11 @@ public static String[] GetReq(String r){
         for (int i = 4; i != size; i++) {
             re[1] += req[i];
         }
+        }else if (r.contains("style")){
+            re[0] = "Gstyle";
+            for (int i = 4; i != size; i++) {
+                re[1] += req[i];
+            }
         }else if (r.contains("png") || r.contains("jpg") || r.contains("jpeg")){
             re[0] ="Gimg";
             for (int i = 4; i != size; i++) {
@@ -136,15 +167,19 @@ public static String[] GetReq(String r){
 
 
 public static byte[] getbuffer(String p) {
-    System.out.println(p);
-    try {
-        Path path = Paths.get(p);
-        return Files.readAllBytes(path);
-        }catch(Exception e){
+    File file = new File(p);
+    try (FileInputStream fis = new FileInputStream(file);
+         ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = fis.read(buffer)) != -1) {
+            bos.write(buffer, 0, bytesRead);
+        }
+        return bos.toByteArray();
+    } catch (Exception e) {
         e.printStackTrace();
         return null;
-    }finally{
-       
     }
 }
     
