@@ -142,7 +142,12 @@ public static String[] ReadRequest(String r){
         for (int i = 4; i != size; i++) {
             re[1] += req[i];
         }
-        }else if (r.contains("style")){
+        }else if (r.contains("script")|| r.contains("js")){
+            re[0] = "Gscript";
+            for (int i = 4; i != size; i++) {
+                re[1] += req[i];
+            }
+        }else if (r.contains("style")|| r.contains("css")){
             re[0] = "Gstyle";
             for (int i = 4; i != size; i++) {
                 re[1] += req[i];
