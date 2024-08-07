@@ -7,9 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 
 public class Webserver {
     public static int port = 80;
@@ -39,54 +37,58 @@ public class Webserver {
             System.out.println("------------   ------------\n"+clientSocket.getInetAddress().getHostAddress() + " :: " + request);
             String response = "";
             if (request  != null && !request.isEmpty()){
-                String[] thereq = GetReq(request);
-                System.out.println(thereq[0]+" : "+thereq[1]);
-             if (thereq[0].startsWith("Ghtml")){
-                if ((response = ReturnFileString("files" + thereq[1]))== null){throw new Exception("err");}
+                String[] requestarray = ReadRequest(request);
+                System.out.println(requestarray[0]+" : "+requestarray[1]);
+             if (requestarray[0].equals("Ghtml")|| requestarray[0].equals("Gstyle") || requestarray[0].equals("Gscript")){
+                if ((response = ReturnFileString("files" + requestarray[1]))== null){throw new Exception("err");}
                 out.println("HTTP/1.1 200 OK");
                 r = "200 OK";
-                out.println("Content-Type: text/html");
+                switch (requestarray[0]) {
+                    case "Ghtml":
+                        out.println("Content-Type: text/html");
+                        break;
+                    case "Gstyle":
+                        out.println("Content-Type: style/css");
+                        break;
+                    case "Gscript":
+                        out.println("Content-Type: text/javascript");break; }
+                
                 out.println("Content-Length: " + response.length());
                 out.println();
                 out.print(response);
                 out.flush();
                 
-             }else if (thereq[0].equals("Gstyle")){
-                if ((response = ReturnFileString("files" + thereq[1]))== null){throw new Exception("err");}
-                System.out.println(thereq[0]+" : "+thereq[1]);
-                response = ReturnFileString("files"+thereq[1]);
+             }else if(requestarray[0].equals("Gico") || requestarray[0].equals("Gimg")){
+                File fl =new File("files" + requestarray[1]);
                 out.println("HTTP/1.1 200 OK");
                 r = "200 OK";
-                out.println("Content-Type: style/css");
-                out.println("Content-Length: " + response.length());
-                out.println();
-                out.print(response);
-                out.flush();
+                switch (requestarray[0]) {
+                    case "Gico":
+                    out.println("Content-Type: image/x-icon");
+                        break;
                 
-             }else if(thereq[0].equals("Gico")){
-                out.println("HTTP/1.1 200 OK");
-                r = "200 OK";
-                out.println("Content-Type: image/x-icon");
-                File icon =new File("files" + thereq[1]);
-                out.println("Content-Length: " + icon.length());
+                    case "Gimg":
+                    out.println("Content-Type: image/png");
+                }
+                
+                out.println("Content-Length: " + fl.length());
                 out.println();
                 out.flush();
-                
-                clientSocket.getOutputStream().write(getbuffer(icon.getPath()));
+                clientSocket.getOutputStream().write(getbuffer(fl.getPath()));
                 clientSocket.getOutputStream().flush();
 
-             }else if(thereq[0].equals("Gimg")){
+             }else if(requestarray[0].equals("Gimg")){
                 out.println("HTTP/1.1 200 OK");
                 r = "200 OK";
                 out.println("Content-Type: image/png");
-                File img =new File("files" + thereq[1]);
+                File img =new File("files" + requestarray[1]);
                 out.println("Content-Length: " + img.length());
                 out.println();
                 out.flush();
                 clientSocket.getOutputStream().write(getbuffer(img.getPath()));
                 clientSocket.getOutputStream().flush();
-              }else if(thereq[0].equals("no")){
-                out.println("HTTP/1.1 302 Found");
+              }else if(requestarray[0].equals("redirect")){
+               out.println("HTTP/1.1 302 Found");
                 r = "302 REDIRECT";
                 out.println("Location: /index.html");
                 out.println();
@@ -130,7 +132,7 @@ public static String ReturnFileString(String path){
     return res.toString();
 }
 
-public static String[] GetReq(String r){
+public static String[] ReadRequest(String r){
     String[] re = {"",""};
     int size = r.length()-8;
     char[] req = r.toCharArray();
@@ -157,10 +159,10 @@ public static String[] GetReq(String r){
             }
         }
         if (re[1].isEmpty()){
-            re[0] = "no";
+            re[0] = "redirect";
         }
     }else if (r.startsWith("POST")){
-
+        
     }
     return re;
 }
