@@ -7,7 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-
+import java.awt.desktop.*;
 
 public class Webserver {
     public static int port = 80;
@@ -37,7 +37,7 @@ public class Webserver {
             System.out.println("------------   ------------\n"+clientSocket.getInetAddress().getHostAddress() + " :: " + request);
             String response = "";
             if (request  != null && !request.isEmpty()){
-                String[] requestarray = ReadRequest(request);
+                String[] requestarray = new RequestReader().ReadRequest(r);
                 System.out.println(requestarray[0]+" : "+requestarray[1]);
              if (requestarray[0].equals("Ghtml")|| requestarray[0].equals("Gstyle") || requestarray[0].equals("Gscript")){
                 if ((response = ReturnFileString("files" + requestarray[1]))== null){throw new Exception("err");}
@@ -132,45 +132,7 @@ public static String ReturnFileString(String path){
     return res.toString();
 }
 
-public static String[] ReadRequest(String r){
-    String[] re = {"",""};
-    int size = r.length()-8;
-    char[] req = r.toCharArray();
-    if (r.startsWith("GET")){
-        if (r.contains("index") || r.contains("html")){
-        re[0] ="Ghtml";
-        for (int i = 4; i != size; i++) {
-            re[1] += req[i];
-        }
-        }else if (r.contains("script")|| r.contains("js")){
-            re[0] = "Gscript";
-            for (int i = 4; i != size; i++) {
-                re[1] += req[i];
-            }
-        }else if (r.contains("style")|| r.contains("css")){
-            re[0] = "Gstyle";
-            for (int i = 4; i != size; i++) {
-                re[1] += req[i];
-            }
-        }else if (r.contains("png") || r.contains("jpg") || r.contains("jpeg")){
-            re[0] ="Gimg";
-            for (int i = 4; i != size; i++) {
-                re[1] += req[i];
-            }
-        }else if (r.contains("ico")){
-            re[0] ="Gico";
-            for (int i = 4; i != size; i++) {
-                re[1] += req[i];
-            }
-        }
-        if (re[1].isEmpty()){
-            re[0] = "redirect";
-        }
-    }else if (r.startsWith("POST")){
-        
-    }
-    return re;
-}
+
 
 
 public static byte[] getbuffer(String p) {
