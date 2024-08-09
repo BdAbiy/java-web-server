@@ -7,7 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.awt.desktop.*;
+
 
 public class Webserver {
     public static int port = 80;
@@ -29,77 +29,62 @@ public class Webserver {
 
     public static void handleRequest(Socket clientSocket) {
         String r ="";
+        String threadresult = "";
         try {
             BufferedReader reqReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
             
             String request = reqReader.readLine();
-            System.out.println("------------   ------------\n"+clientSocket.getInetAddress().getHostAddress() + " :: " + request);
+            threadresult += "------------   ------------\n"+clientSocket.getInetAddress().getHostAddress() + " :: " + request +"\n";
             String response = "";
             if (request  != null && !request.isEmpty()){
-                String[] requestarray = new RequestReader().ReadRequest(r);
-                System.out.println(requestarray[0]+" : "+requestarray[1]);
-             if (requestarray[0].equals("Ghtml")|| requestarray[0].equals("Gstyle") || requestarray[0].equals("Gscript")){
-                if ((response = ReturnFileString("files" + requestarray[1]))== null){throw new Exception("err");}
-                out.println("HTTP/1.1 200 OK");
-                r = "200 OK";
-                switch (requestarray[0]) {
-                    case "Ghtml":
-                        out.println("Content-Type: text/html");
-                        break;
-                    case "Gstyle":
-                        out.println("Content-Type: style/css");
-                        break;
-                    case "Gscript":
-                        out.println("Content-Type: text/javascript");break; }
-                
-                out.println("Content-Length: " + response.length());
-                out.println();
-                out.print(response);
-                out.flush();
-                
-             }else if(requestarray[0].equals("Gico") || requestarray[0].equals("Gimg")){
-                File fl =new File("files" + requestarray[1]);
-                out.println("HTTP/1.1 200 OK");
-                r = "200 OK";
-                switch (requestarray[0]) {
-                    case "Gico":
-                    out.println("Content-Type: image/x-icon");
-                        break;
-                
-                    case "Gimg":
-                    out.println("Content-Type: image/png");
+                String[] requestarray = new RequestReader().ReadRequest(request);
+                threadresult +=requestarray[0]+" : "+requestarray[1] + " : " + requestarray[2]+"\n";
+                if(requestarray[0].equals("GET")){
+                    if (requestarray[1].equals("indexfile") || requestarray[1].equals("style") || requestarray[1].equals("script")){
+                        if(requestarray[1].equals("indexfile")){
+                            if ((response = ReturnFileString("files" + requestarray[2] + "index.html"))== null){throw new Exception("FileNull");};
+                        }else{
+                            if ((response = ReturnFileString("files" + requestarray[2] ))== null){throw new Exception("FileNull");};
+                        }
+                        
+                        out.println("HTTP/1.1 200 OK");
+                        r = "200 OK";
+                        switch (requestarray[1]) {
+                            case "indexfile":
+                                out.println("Content-Type: text/html");
+                                break;
+                            case "style":
+                                out.println("Content-Type: style/css");
+                                break;
+                            case "script":
+                                out.println("Content-Type: text/javascript");break; }
+                        
+                        out.println("Content-Length: " + response.length());
+                        out.println();
+                        out.print(response);
+                        out.flush();
+                    }else if (requestarray[1].equals("img") || requestarray[1].equals("ico")){
+                        byte[] buffer;
+                        if ((buffer= getbuffer("files/" + requestarray[2]))== null){throw new Exception("FileNull");};
+                        out.println("HTTP/1.1 200 OK");
+                        r = "200 OK";
+                        out.println("Content-Type: image/"+requestarray[3]);
+                        out.println("Content-Length: " + buffer.length);
+                        out.println();
+                        out.print(response);
+                        out.flush();
+                    }
+
+                }else if (requestarray[0].equals("POST")){
+
                 }
-                
-                out.println("Content-Length: " + fl.length());
-                out.println();
-                out.flush();
-                clientSocket.getOutputStream().write(getbuffer(fl.getPath()));
-                clientSocket.getOutputStream().flush();
-
-             }else if(requestarray[0].equals("Gimg")){
-                out.println("HTTP/1.1 200 OK");
-                r = "200 OK";
-                out.println("Content-Type: image/png");
-                File img =new File("files" + requestarray[1]);
-                out.println("Content-Length: " + img.length());
-                out.println();
-                out.flush();
-                clientSocket.getOutputStream().write(getbuffer(img.getPath()));
-                clientSocket.getOutputStream().flush();
-              }else if(requestarray[0].equals("redirect")){
-               out.println("HTTP/1.1 302 Found");
-                r = "302 REDIRECT";
-                out.println("Location: /index.html");
-                out.println();
-                out.flush();
-
+             
              }else {
-                out.println("HTTP/1.1 404  NOTFOUND");
-                r = "404 Not Found";
+                throw new Exception("BadRequest");
              }
         
-            }
+            
               
             
           } catch (Exception e) {
@@ -108,7 +93,7 @@ public class Webserver {
             
            
         }finally{
-            try{System.out.println(r);
+            try{System.out.println(threadresult);;System.out.println(r);
             
             clientSocket.close();  }catch(Exception e){e.printStackTrace();}
         }
