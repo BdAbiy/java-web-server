@@ -15,8 +15,8 @@ public class Webserver {
 
     public static void run() {
         try {
-            ServerSocket server = new ServerSocket(port);
-            System.out.println("HTTP Server started on port " + port);
+            ServerSocket server = new ServerSocket(port); 
+            System.out.println("|| HTTP Server started on port " + port+" ||");
             while (true) {
                 Socket client = server.accept();
                 new Thread(() -> handleRequest(client)).start();;
@@ -30,16 +30,17 @@ public class Webserver {
     public static void handleRequest(Socket clientSocket) {
         String r ="";
         String threadresult = "";
+        
         try {
             BufferedReader reqReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
             
             String request = reqReader.readLine();
-            threadresult += "------------   ------------\n"+clientSocket.getInetAddress().getHostAddress() + " :: " + request +"\n";
+            threadresult += "===================================\n"+"Client  :: "+clientSocket.getInetAddress().getHostAddress() + "\n" +"Request :: " + request +"\n";
             String response = "";
             if (request  != null && !request.isEmpty()){
                 String[] requestarray = new RequestReader().ReadRequest(request);
-                threadresult +=requestarray[0]+" : "+requestarray[1] + " : " + requestarray[2]+"\n";
+                threadresult +="Methode :: "+requestarray[0]+"\nPath    :: "+requestarray[2] +"\n";
                 if(requestarray[0].equals("GET")){
                     if (requestarray[1].equals("indexfile") || requestarray[1].equals("style") || requestarray[1].equals("script")){
                         if(requestarray[1].equals("indexfile")){
@@ -72,7 +73,7 @@ public class Webserver {
                         out.println("Content-Type: image/"+requestarray[3]);
                         out.println("Content-Length: " + buffer.length);
                         out.println();
-                        out.print(response);
+                        clientSocket.getOutputStream().write(buffer);
                         out.flush();
                     }
 
@@ -88,12 +89,26 @@ public class Webserver {
               
             
           } catch (Exception e) {
-            e.printStackTrace();
+            if (e.getMessage().equals("FileNull")){
+                r = "404 NotFound";
+                try {
+                    clientSocket.getOutputStream().write("HTTP/1.1 404 Not Found".getBytes());
+                } catch (Exception ex) {
+                    
+                }
+                
+            }else if (e.getMessage().equals("BadRequest")){
+                try {
+                    clientSocket.getOutputStream().write("400 Bad Request".getBytes());
+                } catch (Exception ex) {
+                    
+                }
+            }
            
             
            
         }finally{
-            try{System.out.println(threadresult);;System.out.println(r);
+            try{System.out.println(threadresult+"Status  :: "+r);
             
             clientSocket.close();  }catch(Exception e){e.printStackTrace();}
         }
@@ -111,7 +126,6 @@ public static String ReturnFileString(String path){
         
     }r.close();
 }catch(Exception e){
-        e.printStackTrace();
         return null;
     }
     return res.toString();

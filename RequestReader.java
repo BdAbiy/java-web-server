@@ -1,6 +1,6 @@
 public class RequestReader {
-    
-    public  String[] ReadRequest(String r){
+   
+    public static String[] ReadRequest(String r){
         boolean ok = false;
         String[] resulte = {"","","",""};
         int size =0;
@@ -30,7 +30,7 @@ public class RequestReader {
             }else if (r.contains(".png") || r.contains(".jpg") || r.contains(".jpeg")|| r.contains(".svg")|| r.contains(".gif")||r.contains(".bmp")||r.contains(".webp")||r.contains(".ico")){
                 resulte[1] ="img";
                 if (r.contains(".png")) {
-                    
+                    resulte[3] = "png";
                 }else if(r.contains(".jpg")){
                     resulte[3] = "jpg";
                 }else if (r.contains(".jpeg")) {
@@ -56,7 +56,6 @@ public class RequestReader {
             if (resulte[1].isEmpty()){
                 resulte[0] = "redirect";
             }
-            System.out.println(resulte[0]+" : "+resulte[1]+" : "+resulte[2]);
         return resulte;
         }}
 
