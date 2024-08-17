@@ -3,132 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creative Styled Website</title>
-    <style>body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background: #f4f4f4;
-    color: #333;
-}header {
-    background: #333;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
-}header .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}h1 {
-    font-size: 3em;
-    margin: 0;
-}p {
-    font-size: 1.2em;
-}main {
-    padding: 20px 0;
-}section {
-    padding: 40px 0;
-}.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}h2 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
-}.grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}.card {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    overflow: hidden;
-    text-align: center;
-    flex: 1 1 calc(33.333% - 20px);
-    box-sizing: border-box;
-}.card img {
-    max-width: 100%;
-    border-bottom: 1px solid #ddd;
-}.card h3 {
-    margin: 20px 0 10px;
-}.card p {
-    padding: 0 20px 20px;
-}form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}form input, form textarea {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1em;
-}form button {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background: #333;
-    color: #fff;
-    font-size: 1em;
-    cursor: pointer;
-}footer {
-    background: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-}
-
+    <title>BADREDDIN's Professional Website</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        header, footer {
+            background: #1f1f1f;
+            color: #fff;
+            text-align: center;
+            padding: 30px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 1.2em;
+            margin-top: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        main {
+            padding: 40px 0;
+        }
+        section {
+            margin-bottom: 60px;
+        }
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #555;
+            padding-bottom: 10px;
+        }
+        p {
+            font-size: 1.2em;
+            color: #bdbdbd;
+        }
+        .grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .card {
+            flex: 1 1 calc(33.333% - 20px);
+            background: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            text-align: left;
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card img {
+            width: 100%;
+            border-bottom: 2px solid #333;
+        }
+        .card-content {
+            padding: 20px;
+        }
+        .card h3 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+        .card p {
+            color: #bdbdbd;
+        }
+        .card a {
+            display: inline-block;
+            margin-top: 15px;
+            color: #64b5f6;
+            text-decoration: none;
+        }
+        .card a:hover {
+            text-decoration: underline;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        form input, form textarea, form button {
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            border: 1px solid #333;
+            background: #1e1e1e;
+            color: #e0e0e0;
+        }
+        form button {
+            background: #64b5f6;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        form button:hover {
+            background: #42a5f5;
+        }
+        footer p {
+            margin: 0;
+            font-size: 1em;
+        }
+        @media (max-width: 768px) {
+            .card {
+                flex: 1 1 100%;
+            }
+            h2 {
+                font-size: 2em;
+            }
+            header h1 {
+                font-size: 2em;
+            }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>Welcome to BADREDDIN's Website</h1>
-            <p>Running on his HTTP server</p>
+            <h1>BADREDDIN's World</h1>
+            <p>Developer. Gamer. Innovator.</p>
         </div>
     </header>
     <main>
-        <section id="about">
-            <div class="container">
-                <h2>About Me</h2>
-                <p>Welcome to my website! Here, you can find a collection of my work, hobbies, and interests. I'm passionate about Server develppment and Game devloppment.</p>
-            </div>
+        <section id="about" class="container">
+            <h2>About Me</h2>
+            <p>I’m BADREDDIN, a passionate developer focused on server and game development. Explore my journey, projects, and interests below.</p>
         </section>
-        <section id="portfolio">
-            <div class="container">
-                <h2>Portfolio</h2>
-                <div class="grid">
-                    <div class="card">
-                        <img src="jws.png" alt="Project 1 Thumbnail">
-                        <h3>Project 1</h3>
-                        <h4>JAVA Http Server</h4>
-                        <p>I have created an HTTP server from scratch using Java and backend development skills and knowledge. You can download the project and source code from my itch.io profile at <a href="https://ab_iy.itch.io/">link to itch.io profile</a>.</p>
+        <section id="portfolio" class="container">
+            <h2>Portfolio</h2>
+            <div class="grid">
+                <div class="card">
+                    <img src="jws.png" alt="Java HTTP Server Project Thumbnail">
+                    <div class="card-content">
+                        <h3>Java HTTP Server</h3>
+                        <p>An HTTP server built from scratch in Java. <a href="https://ab_iy.itch.io/">Check it out on itch.io</a>.</p>
                     </div>
-                    <div class="card">
-                        <img src="rmz.png" alt="Project 2 Thumbnail">
-                        <h3>Project 2</h3>
-                        <p>Survival horror game created using the Godot game engine. The game revolves around people lost in a maze with the goal of finding a way out. It includes single-player and LAN multiplayer modes. The game is currently under development and is not available yet.</p>
+                </div>
+                <div class="card">
+                    <img src="rmz.png" alt="Survival Horror Game Thumbnail">
+                    <div class="card-content">
+                        <h3>Survival Horror Game</h3>
+                        <p>A maze survival game built in Godot, featuring multiplayer modes. <em>Currently in development.</em></p>
                     </div>
-                    <div class="card">
-                        <img src="cht.png" alt="Project 3 Thumbnail">
-                        <h3>Project 3</h3>
-                        <p>LAN chat app using the UDP protocol. It's also downloadable from my profile on <a href="https://ab_iy.itch.io">itch.io</a>.</p>
+                </div>
+                <div class="card">
+                    <img src="cht.png" alt="LAN Chat App Thumbnail">
+                    <div class="card-content">
+                        <h3>LAN Chat App</h3>
+                        <p>A UDP-based LAN chat application. <a href="https://ab_iy.itch.io">Download on itch.io</a>.</p>
                     </div>
                 </div>
             </div>
         </section>
-        <section id="contact">
-            <div class="container">
-                <h2>Contact Me</h2>
-                <form>
-                    <input type="text" id="name" placeholder="Name" required>
-                    <input type="email" id="email" required>
-                    <textarea placeholder="Message" id="message"></textarea>
-                    <button type="submit" id="sendbutton">Send Message</button>
-                </form>
-            </div>
+        <section id="contact" class="container">
+            <h2>Contact Me</h2>
+            <form>
+                <input type="text" id="name" placeholder="Your Name" required>
+                <input type="email" id="email" placeholder="Your Email" required>
+                <textarea id="message" placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit" id="sendbutton">Send Message</button>
+            </form>
         </section>
     </main>
     <footer>
