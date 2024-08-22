@@ -1,13 +1,16 @@
-@echo off 
+@echo off
 cls
-echo updating classes ...
-echo main.class
-javac main.java
-echo Webserver.class
-javac Webserver.java
-echo RequestReader.class
-javac RequestReader.java
-echo done
+echo Updating classes ...
+echo Compiling main.java
+javac source/main.java
+echo Compiling Webserver.java
+javac  source/Webserver.java
+echo Compiling RequestReader.java
+javac - source/RequestReader.java
+echo moving
+move source/*.class .
+echo Done
+
 echo [                    ]
 for /l %%i in (1,1,10000) do (
     if %%i == 1000 (
