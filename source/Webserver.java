@@ -40,7 +40,8 @@ public class Webserver {
             threadresult += "===================================\n"+"Client  :: "+clientSocket.getInetAddress().getHostAddress() + "\n" +"Request :: " + request +"\n";
             String response = "";
             if (request  != null && !request.isEmpty()){
-                String[] requestarray = new source.RequestReader().ReadRequest(request);
+                RequestReader Rreader = new RequestReader(request);
+                String[] requestarray = {Rreader.methode,Rreader.filetype,Rreader.path,Rreader.extension};
                 threadresult +="Methode :: "+requestarray[0]+"\nPath    :: "+requestarray[2] +"\n";
                 if(requestarray[0].equals("GET")){
                     if (requestarray[1].equals("indexfile") || requestarray[1].equals("style") || requestarray[1].equals("script")){
