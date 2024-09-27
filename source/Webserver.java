@@ -41,19 +41,18 @@ public class Webserver {
             String response = "";
             if (request  != null && !request.isEmpty()){
                 RequestReader Rreader = new RequestReader(request);
-                String[] requestarray = {Rreader.methode,Rreader.filetype,Rreader.path,Rreader.extension};
-                threadresult +="Methode :: "+requestarray[0]+"\nPath    :: "+requestarray[2] +"\n";
-                if(requestarray[0].equals("GET")){
-                    if (requestarray[1].equals("indexfile") || requestarray[1].equals("style") || requestarray[1].equals("script")){
-                        if(requestarray[1].equals("indexfile")){
-                            if ((response = ReturnFileString("files" + requestarray[2] + "index.html"))== null){throw new Exception("FileNull");};
+                threadresult +="Methode :: "+Rreader.methode+"\nPath    :: "+Rreader.path +"\n";
+                if(Rreader.methode.equals("GET")){
+                    if (Rreader.filetype.equals("indexfile") || Rreader.filetype.equals("style") || Rreader.filetype.equals("script")){
+                        if(Rreader.filetype.equals("indexfile")){
+                            if ((response = ReturnFileString("files" + Rreader.path + "index.html"))== null){throw new Exception("FileNull");};
                         }else{
-                            if ((response = ReturnFileString("files" + requestarray[2] ))== null){throw new Exception("FileNull");};
+                            if ((response = ReturnFileString("files" + Rreader.path ))== null){throw new Exception("FileNull");};
                         }
                         
                         out.println("HTTP/1.1 200 OK");
                         r = "200 OK";
-                        switch (requestarray[1]) {
+                        switch (Rreader.filetype) {
                             case "indexfile":
                                 out.println("Content-Type: text/html");
                                 break;
@@ -67,19 +66,29 @@ public class Webserver {
                         out.println();
                         out.print(response);
                         out.flush();
-                    }else if (requestarray[1].equals("img") || requestarray[1].equals("ico")){
+                    }else if (Rreader.filetype.equals("img") || Rreader.filetype.equals("ico")){
                         byte[] buffer;
-                        if ((buffer= getbuffer("files/" + requestarray[2]))== null){throw new Exception("FileNull");};
+                        if ((buffer= getbuffer("files/" + Rreader.path))== null){throw new Exception("FileNull");};
                         out.println("HTTP/1.1 200 OK");
                         r = "200 OK";
-                        out.println("Content-Type: image/"+requestarray[3]);
+                        out.println("Content-Type: image/"+Rreader.extension);
                         out.println("Content-Length: " + buffer.length);
                         out.println();
                         clientSocket.getOutputStream().write(buffer);
                         out.flush();
+                    }else if (Rreader.filetype.equals("download")){
+                        byte[] buffer ;
+                        if ((buffer = getbuffer("files/"+Rreader.path)) != null){
+                        out.println("HTTP/1.1 200 OK");
+                        out.println("Content-Type: application/octet-stream");  
+                        out.println("Content-Length: " + buffer.length);
+                        out.println("Content-Disposition: attachment; filename=\"" + Rreader.extension + "\""); // the Rreader.extension will return the full file name
+                        out.println();}else{
+                            throw new Exception("FileNull");
+                        }
                     }
 
-                }else if (requestarray[0].equals("POST")){
+                }else if (Rreader.methode.equals("POST")){
 
                 }
              
@@ -138,6 +147,7 @@ public static String ReturnFileString(String path){
 
 public static byte[] getbuffer(String p) {
     File file = new File(p);
+    if (!file.exists()){return null;}
     try (FileInputStream fis = new FileInputStream(file);
          ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
 

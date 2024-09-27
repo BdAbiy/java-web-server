@@ -1,5 +1,7 @@
 package source;
+import java.io.File;
 public class RequestReader {
+    
     /**
  * A class for reading the request 
  * 
@@ -55,7 +57,11 @@ public RequestReader(String r){
                 resulte[3] = "ico";
             }
             
-        }else{resulte[1]="indexfile";}
+        }else{
+            File file = new File("files/" + resulte[2]);
+            if (file.exists()){resulte[1]="download";resulte[3] = file.getName();}else {
+            resulte[1]="indexfile";}
+        }
         try {
             
         } catch (Exception e) {
